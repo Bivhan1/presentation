@@ -1,0 +1,8 @@
+version: "3"
+services:
+  Web1:
+    build: /home/vagrant/githubpresent/presentation/docker/dockerfile/
+    image: dockercompose/web1
+    container_name: Web1Container
+    ports:
+      - "3308:80"
