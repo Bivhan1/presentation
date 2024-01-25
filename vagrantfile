@@ -1,41 +1,25 @@
 Vagrant.configure("2") do |config|
-  # Use the "generic/ubuntu2204" box
   config.vm.box = "generic/ubuntu2204"
 
-  # Configure a private network with a specific IP address
   config.vm.network "private_network", ip: "192.168.56.12"
 
-  # Sync the current directory to /vagrant in the guest machine
-  config.vm.synced_folder ".", "/vagrant", disabled: true
+ config.vm.synced_folder ".", "/vagrant", disabled: true
 
-  # Customize provider-specific settings (e.g., VirtualBox)
-  config.vm.provider "virtualbox" do |vb|
-    # Customize VirtualBox settings if needed
+config.vm.provider "virtualbox" do |vb|
     vb.memory = "4096"
     vb.cpus = 4
   end
 
-  # Provisioning script using shell
-  config.vm.provision "shell", inline: <<-SHELL
-    # Update the package list
-    sudo apt-get update
-
-    # Install additional packages or configure your system as needed
-    # Example:
-    # sudo apt-get install -y <package_name>
-
-    # Clean up
-    sudo apt-get autoremove -y
-    sudo apt-get clean
-    
-    # Add Docker's official GPG key:
+config.vm.provision "shell", inline: <<-SHELL
+sudo apt-get update
+sudo apt-get autoremove -y
+sudo apt-get clean
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-# Add the repository to Apt sources:
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
